@@ -94,7 +94,7 @@ namespace SignUpCompany.Services
             var company = await companyRepository.GetByEmail(signInDTO.Email);
 
             if (company == null)
-                return (false, "Your company not Exist Go Sign Up.",null);
+                return (false, "Your company not Exist Go sign Up.",null);
 
             if (!company.IsVerified)
                 return (false,"Your account needs verifiy.", null);
