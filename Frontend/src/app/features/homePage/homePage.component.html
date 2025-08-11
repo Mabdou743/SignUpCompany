@@ -1,0 +1,42 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container">
+    <div class="collapse navbar-collapse" id="navbarButtonsExample">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <p>Welcome <strong>{{homeData?.englishName}}</strong></p>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center">
+        <button data-mdb-ripple-init type="button" (click)="logout()" class="btn btn-danger">
+          Logout
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+<div class="d-flex justify-content-center mt-5">
+  <div class="card mb-3" style="width: 600px;">
+    <div class="row g-0">
+      <div class="col-md-4">
+        <img [src]="LogoSrc" alt="Logo Image" class="img-fluid rounded-start" />
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{homeData?.englishName}} - {{homeData?.arabicName}}</h5>
+          <p class="card-text">
+            Phone Number: {{homeData?.phoneNumber}}
+          </p>
+          <p class="card-text">
+            Email: {{homeData?.email}}
+          </p>
+          <p class="card-text">
+            Website: <a href="{{homeData?.websiteUrl}}">{{homeData?.websiteUrl}}</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
