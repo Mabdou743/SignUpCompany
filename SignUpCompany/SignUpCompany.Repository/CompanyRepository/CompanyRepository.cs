@@ -6,35 +6,40 @@ namespace SignUpCompany.Repository
 {
     public class CompanyRepository : ICompanyRepository
     {
-        private readonly CompanyDBContext dbContext;
-        public CompanyRepository(CompanyDBContext _dbContext)
+        private readonly CompanyDBContext _dbContext;
+        public CompanyRepository(CompanyDBContext dbContext)
         {
-            dbContext = _dbContext;
+            _dbContext = dbContext;
         }
 
         public async Task AddCompany(Company company)
         {
-            await dbContext.Companies.AddAsync(company);
+            await _dbContext.Companies.AddAsync(company);
+        }
+
+        public void UpdateCompany(Company company)
+        {
+            _dbContext.Companies.Update(company);
         }
 
         public async Task<Company> GetByEmail(string email)
         {
-            return await dbContext.Companies.FirstOrDefaultAsync(c=>c.Email == email);
+            return await _dbContext.Companies.FirstOrDefaultAsync(c=>c.Email == email);
         }
 
         public async Task<Company> GetById(Guid id)
         {
-            return await dbContext.Companies.FindAsync(id);
+            return await _dbContext.Companies.FindAsync(id);
         }
 
         public async Task<bool> IsExist(Expression<Func<Company, bool>> predicate)
         {
-            return await dbContext.Companies.AnyAsync(predicate);
+            return await _dbContext.Companies.AnyAsync(predicate);
         }
 
         public async Task SaveChangesAsync()
         {
-            await dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

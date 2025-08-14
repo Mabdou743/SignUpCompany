@@ -16,8 +16,7 @@ namespace SignUpCompany.Data
         public string? PhoneNumber { get; set; }
         public string? WebsiteUrl { get; set; }
         public string? LogoFileName { get; set; }
-        public string? PasswordHash { get; set; }
-        public bool IsVerified { get; set; }
-        public string? OtpCode { get; set; }
+
+        public User User { get; set; }
     }
 }

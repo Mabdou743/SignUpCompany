@@ -11,6 +11,7 @@ namespace SignUpCompany.Repository
     public interface ICompanyRepository
     {
         Task AddCompany(Company company);
+        void UpdateCompany(Company company);
         Task<Company> GetById(Guid id);
         Task<Company> GetByEmail(string email);
         Task<bool> IsExist(Expression<Func<Company,bool>> predicate);

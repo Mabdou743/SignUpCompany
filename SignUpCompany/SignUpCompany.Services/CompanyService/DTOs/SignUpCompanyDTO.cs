@@ -17,6 +17,5 @@ namespace SignUpCompany.Services
         [MaxLength(12)]
         public string? PhoneNumber { get; set; }
         public string? WebsiteUrl { get; set; }
-        public IFormFile? Logo { get; set; }
     }
 }

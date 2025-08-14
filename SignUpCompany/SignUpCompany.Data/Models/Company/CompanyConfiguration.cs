@@ -12,7 +12,7 @@ namespace SignUpCompany.Data
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
-            builder.HasKey(c=>c.Id);
+            builder.HasKey(c => c.Id);
 
             builder.Property(c => c.EnglishName)
                 .IsRequired()
@@ -35,8 +35,11 @@ namespace SignUpCompany.Data
             builder.Property(c => c.LogoFileName)
                .HasMaxLength(300);
 
-            builder.Property(c => c.PasswordHash)
-               .HasMaxLength(500);
+
+            builder.HasOne(c => c.User)
+                .WithOne(u => u.Company)
+                .HasForeignKey<Company>(c => c.Id)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

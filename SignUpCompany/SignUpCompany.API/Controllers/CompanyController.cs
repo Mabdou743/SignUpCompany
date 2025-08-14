@@ -16,7 +16,7 @@ namespace SignUpCompany.API.Controllers
         }
 
         [HttpPost("sign-up")]
-        public async Task<IActionResult> SignUpCompany([FromForm] SignUpCompanyDTO signUpCompanyDTO)
+        public async Task<IActionResult> SignUpCompany([FromBody] SignUpCompanyDTO signUpCompanyDTO)
         {
             var result = await companyService.RegisterCompany(signUpCompanyDTO);
 
@@ -79,7 +79,7 @@ namespace SignUpCompany.API.Controllers
         }
 
         [HttpPost("sign-in")]
-        public async Task<IActionResult> SignIn(SignInDTO signInDTO)
+        public async Task<IActionResult> SignIn([FromBody] SignInDTO signInDTO)
         {
             var result = await companyService.SignIn(signInDTO);
 
@@ -118,6 +118,25 @@ namespace SignUpCompany.API.Controllers
                 Status = 200,
                 Message = result.Message,
                 Data = result.Data
+            });
+        }
+
+        [HttpPost("upload-logo")]
+        public async Task<IActionResult> SaveCompanyLogo(Guid companyId, IFormFile logo)
+        {
+            var result = await companyService.UploadCompanyLogoAsync(companyId, logo);
+
+            if (!result.IsSuccess)
+                return Ok(new ApiResponse<CompanyDTO>
+                {
+                    Status = 400,
+                    Message = result.Message,
+                });
+
+            return Ok(new ApiResponse<CompanyDTO>
+            {
+                Status = 200,
+                Message = result.Message,
             });
         }
     }

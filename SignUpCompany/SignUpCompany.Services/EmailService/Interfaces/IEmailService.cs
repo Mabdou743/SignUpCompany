@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace SignUpCompany.Services.Interfaces
+namespace SignUpCompany.Services
 {
     public interface IEmailService
     {

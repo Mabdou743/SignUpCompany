@@ -6,7 +6,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using SignUpCompany.Services.Interfaces;
+using SignUpCompany.Services;
 
 namespace SignUpCompany.Services
 {

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SignUpCompany.Data;
@@ -11,9 +12,11 @@ using SignUpCompany.Data;
 namespace SignUpCompany.Data.Migrations
 {
     [DbContext(typeof(CompanyDBContext))]
-    partial class CompanyDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250813133625_IdentityConfiguration")]
+    partial class IdentityConfiguration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,34 +192,6 @@ namespace SignUpCompany.Data.Migrations
                     b.ToTable("Companies");
                 });
 
-            modelBuilder.Entity("SignUpCompany.Data.OTP", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("ExpirationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("OtpCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("OTPs");
-                });
-
             modelBuilder.Entity("SignUpCompany.Data.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -250,6 +225,12 @@ namespace SignUpCompany.Data.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
+
+                    b.Property<string>("OtpCode")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("OtpExpiry")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("text");
@@ -344,22 +325,9 @@ namespace SignUpCompany.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SignUpCompany.Data.OTP", b =>
-                {
-                    b.HasOne("SignUpCompany.Data.User", "User")
-                        .WithMany("OTPs")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("SignUpCompany.Data.User", b =>
                 {
                     b.Navigation("Company");
-
-                    b.Navigation("OTPs");
                 });
 #pragma warning restore 612, 618
         }
