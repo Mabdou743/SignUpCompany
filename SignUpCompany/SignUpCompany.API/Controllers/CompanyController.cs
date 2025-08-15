@@ -56,6 +56,26 @@ namespace SignUpCompany.API.Controllers
                 Data = null
             });
         }
+        [HttpPost("Resend-otp")]
+        public async Task<IActionResult> ResendOTP([FromBody] ResendOTP resendOTP)
+        {
+            var result = await companyService.ResendOTP(resendOTP);
+
+            if (!result.IsVerified)
+                return BadRequest(new ApiResponse<VerifyOTPDTO>
+                {
+                    Status = 400,
+                    Message = result.Message,
+                    Data = null
+                });
+
+            return Ok(new ApiResponse<VerifyOTPDTO>
+            {
+                Status = 200,
+                Message = result.Message,
+                Data = null
+            });
+        }
 
         [HttpPost("set-password")]
         public async Task<IActionResult> SetPassword([FromBody] SetPasswordDTO setPassword)
@@ -122,7 +142,7 @@ namespace SignUpCompany.API.Controllers
         }
 
         [HttpPost("upload-logo")]
-        public async Task<IActionResult> SaveCompanyLogo(Guid companyId, IFormFile logo)
+        public async Task<IActionResult> SaveCompanyLogo([FromForm] Guid companyId, IFormFile logo)
         {
             var result = await companyService.UploadCompanyLogoAsync(companyId, logo);
 

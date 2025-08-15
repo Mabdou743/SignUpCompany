@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
 using SignUpCompany.Data;
 
-namespace SignUpCompany.API.Middlewares
+namespace SignUpCompany.API
 {
     public class TransactionMiddleware : IMiddleware
     {

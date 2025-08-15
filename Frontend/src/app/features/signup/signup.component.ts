@@ -19,8 +19,6 @@ export class SignUpComponent {
   successMessage = '';
   errorMessage = '';
   loading = false;
-  selectedLogo: File | null = null;
-  logoPreview: string | null = null;
 
   constructor(private fb: FormBuilder, private authService: AuthService, private router: Router ) {
     this.signUpForm = this.fb.group({
@@ -28,20 +26,11 @@ export class SignUpComponent {
       englishName: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: [''],
-      websiteUrl: [''],
-      logo: [null]
+      websiteUrl: ['']
     });
   }
-  ngOnInit() {
-  }
 
-  onLogoChange(event: any): void {
-    this.selectedLogo = event.target.files[0] ?? null;
-    if (this.selectedLogo) {
-      this.logoPreview = URL.createObjectURL(this.selectedLogo);
-    } else {
-      this.logoPreview = null;
-    }
+  ngOnInit() {
   }
 
   onSubmit(): void {
@@ -54,17 +43,15 @@ export class SignUpComponent {
       return;
     }
 
-    const formData = new FormData();
-    formData.append('ArabicName', this.signUpForm.value.arabicName);
-    formData.append('EnglishName', this.signUpForm.value.englishName);
-    formData.append('Email', this.signUpForm.value.email);
-    formData.append('PhoneNumber', this.signUpForm.value.phoneNumber);
-    formData.append('WebsiteUrl', this.signUpForm.value.websiteUrl);
-    if (this.selectedLogo) {
-      formData.append('Logo', this.selectedLogo);
-    }
+    const signupData = {
+      ArabicName: this.signUpForm.value.arabicName,
+      EnglishName: this.signUpForm.value.englishName,
+      Email: this.signUpForm.value.email,
+      PhoneNumber: this.signUpForm.value.phoneNumber,
+      WebsiteUrl: this.signUpForm.value.websiteUrl
+    };
 
-    this.authService.signup(formData).subscribe({
+    this.authService.signup(signupData).subscribe({
       next: (res) => {
         console.log("Message:", res.message);
         this.successMessage = res.message

@@ -12,7 +12,6 @@ using System.Text;
 using SignUpCompany.Services.OTPService;
 using Serilog;
 using Serilog.Exceptions;
-using SignUpCompany.API.Middlewares;
 
 namespace SignUpCompany.API
 {
@@ -108,6 +107,7 @@ namespace SignUpCompany.API
             builder.Services.AddScoped<IOTPService, OTPService>();
             builder.Services.AddScoped<IEmailService, EmailService>();
             builder.Services.AddScoped<IFileStorageService, FileStorageService>();
+            builder.Services.AddScoped<TransactionMiddleware>();
             builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
             builder.Services.AddSingleton(sp =>
                 sp.GetRequiredService<IOptions<JwtSettings>>().Value);

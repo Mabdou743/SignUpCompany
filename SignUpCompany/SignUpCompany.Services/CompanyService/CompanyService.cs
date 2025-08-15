@@ -23,7 +23,7 @@ namespace SignUpCompany.Services
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        public CompanyService(ICompanyRepository companyRepository,IFileStorageService fileStorageService,IOTPService otpService, IEmailService emailService, JwtSettings jwtSettings, UserManager<User> userManager, SignInManager<User> signInManager)
+        public CompanyService(ICompanyRepository companyRepository, IFileStorageService fileStorageService, IOTPService otpService, IEmailService emailService, JwtSettings jwtSettings, UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _companyRepository = companyRepository;
             _fileStorageService = fileStorageService;
@@ -79,8 +79,9 @@ namespace SignUpCompany.Services
 
         public async Task<(bool IsVerified, string Message)> VerifyCompany(VerifyOTPDTO verifyOTPDTO)
         {
-            var user = await _userManager.Users.Include(u => u.Company)
-                            .FirstOrDefaultAsync(u => u.Email == verifyOTPDTO.Email);
+            var user = await _userManager.Users
+                 .Include(u => u.Company)
+                 .FirstOrDefaultAsync(u => u.Email == verifyOTPDTO.Email);
 
             if (user == null)
                 return (false, "User not Found.");
@@ -107,7 +108,24 @@ namespace SignUpCompany.Services
 
             return (true, "Your account has been verified");
         }
+        public async Task<(bool IsVerified, string Message)> ResendOTP(ResendOTP resendOTP)
+        {
+            var user = await _userManager.Users
+                .Include(u => u.Company)
+                .FirstOrDefaultAsync(u => u.Email == resendOTP.Email);
 
+            if (user == null)
+                return (false, "User not found.");
+
+            if (user.EmailConfirmed)
+                return (false, "Email already verified.");
+
+            var newOtp = await _otpService.GenerateOTP(user.Id);
+
+            await _emailService.SendOTPEmail(user.Email, newOtp);
+
+            return (true, "A new OTP has been sent to your email. Please check it.");
+        }
         public async Task<(bool IsSet, string Message)> SetPassword(SetPasswordDTO setPasswordDTO)
         {
             if (setPasswordDTO.Password != setPasswordDTO.ConfirmPassword)
@@ -130,7 +148,6 @@ namespace SignUpCompany.Services
 
             return (true, "Password set successfully.");
         }
-
         public async Task<(bool IsSuccess, string Message, AuthDTO? Data)> SignIn(SignInDTO signInDTO)
         {
             var user = await _userManager.FindByEmailAsync(signInDTO.Email);
@@ -192,7 +209,7 @@ namespace SignUpCompany.Services
                 new Claim(ClaimTypes.Email, user.Email),
             };
 
-            if(company is not null)
+            if (company is not null)
             {
                 claims.Add(new Claim("CompanyEnglishName", company.EnglishName));
                 claims.Add(new Claim("CompanyArabicName", company.ArabicName));
@@ -211,6 +228,7 @@ namespace SignUpCompany.Services
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
         #endregion
     }
 }

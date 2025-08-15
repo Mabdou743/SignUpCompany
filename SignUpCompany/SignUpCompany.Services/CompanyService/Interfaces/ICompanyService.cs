@@ -13,6 +13,7 @@ namespace SignUpCompany.Services
     {
         Task<(bool IsSuccess, string Message)> RegisterCompany(SignUpCompanyDTO companyDTO);
         Task<(bool IsVerified, string Message)> VerifyCompany(VerifyOTPDTO verifyOTPDTO);
+        Task<(bool IsVerified, string Message)> ResendOTP(ResendOTP resendOTP);
         Task<(bool IsSet, string Message)> SetPassword(SetPasswordDTO setPasswordDTO);
         Task<(bool IsSuccess, string Message, AuthDTO? Data)> SignIn(SignInDTO signInDTO);
         Task<(bool IsSuccess, string Message, CompanyDTO? Data)> GetCompany(string email);

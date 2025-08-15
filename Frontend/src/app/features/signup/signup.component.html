@@ -51,11 +51,6 @@
                     placeholder="Website URL (optional)" formControlName="websiteUrl" />
                 </div>
 
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <input type="file" id="logo" class="form-control form-control-lg" (change)="onLogoChange($event)" />
-                  <img *ngIf="logoPreview" [src]="logoPreview" class="img-thumbnail mt-2" style="max-width: 150px;" />
-                </div>
-
                 <div *ngIf="successMessage" class="alert alert-success">
                   {{ successMessage }}
                 </div>

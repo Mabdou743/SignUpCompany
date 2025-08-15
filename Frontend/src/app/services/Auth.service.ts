@@ -27,6 +27,20 @@ export class AuthService {
         return !!token
     }
 
+    getId(){
+        const Token = this.getAuthToken();
+        const tokenparts = Token.split('.');
+
+        if (tokenparts.length !== 3)
+            return null
+
+        const payload = JSON.parse(atob(tokenparts[1]))
+        console.log("Payload: ", payload);
+        return payload[
+            'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        ];
+    }
+
     getEmail() {
         const Token = this.getAuthToken();
         const tokenparts = Token.split('.');
@@ -41,7 +55,7 @@ export class AuthService {
         ];
     }
 
-    signup(data: FormData): Observable<ApiResponse<null>> {
+    signup(data: any): Observable<ApiResponse<null>> {
         return this.http.post<ApiResponse<null>>(
             `${this.apiUrl}/api/Company/sign-up`, data
         );
